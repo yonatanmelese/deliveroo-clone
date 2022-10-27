@@ -1,6 +1,6 @@
 export default {
   name: 'featured',
-  title: 'Featured',
+  title: 'Featured Menu Categories',
   type: 'document',
   fields: [
     {
@@ -20,11 +20,6 @@ export default {
       type: 'array',
       title: 'Restaurants',
       of: [{type: 'reference', to: [{type: 'restaurant'}]}],
-    },
-    {
-      name: 'image',
-      type: 'image',
-      title: 'Dish Image',
     },
   ],
 };

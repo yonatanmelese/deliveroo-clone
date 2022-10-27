@@ -52,7 +52,7 @@ export default {
     },
     {
       name: 'dishes',
-      type: 'string',
+      type: 'array',
       title: 'Dishes',
       validation: Rule => Rule.required(),
       of: [{type: 'reference', to: [{type: 'dish'}]}],

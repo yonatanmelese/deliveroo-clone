@@ -1,10 +1,26 @@
 import {Dimensions, ScrollView, View} from 'react-native';
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
 import Header from '../components/Header';
 import Categories from '../components/Categories';
 import FeaturedRow from '../components/FeaturedRow';
+import client from '../api/sanity';
 const HomeScreen = () => {
+  const [featuredCategories, setFeaturedCategories] = useState([]);
+  const fetchFeaturedCategories = async () => {
+    const response = await client.fetch(`*[_type == "featured"]{
+    ...,
+    restaurants[]->{
+      ...,
+      dishes[]->
+    }
+  }`);
+    setFeaturedCategories(response);
+  };
+  useEffect(() => {
+    fetchFeaturedCategories();
+  }, []);
+
   return (
     <View>
       {/* header */}
@@ -14,18 +30,14 @@ const HomeScreen = () => {
           paddingBottom: Dimensions.get('screen').height * 0.2,
         }}>
         <Categories />
-        <FeaturedRow
-          title="Featured One"
-          description="This is description text for featured row one"
-        />
-        <FeaturedRow
-          title="Featured Two"
-          description="This is description text for featured row two"
-        />
-        <FeaturedRow
-          title="Featured Three"
-          description="This is description text for featured row three"
-        />
+        {featuredCategories.map(category => (
+          <FeaturedRow
+            key={category._id}
+            id={category._id}
+            title={category.name}
+            description={category.short_description}
+          />
+        ))}
       </ScrollView>
     </View>
   );
